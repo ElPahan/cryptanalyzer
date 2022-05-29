@@ -2,29 +2,30 @@ package ua.com.javarush.ppalekhov.cryptanalyzer;
 
 import java.util.ArrayList;
 
-public class EnCode {
+public class Encode {
     private final ArrayList<Character> sourceText;
     private final ArrayList<Character> alphabet;
     private final int key;
 
-    public EnCode(ArrayList<Character> sourceText, ArrayList<Character> alphabet, int key) {
+    public Encode(ArrayList<Character> sourceText, ArrayList<Character> alphabet, int key) {
         this.sourceText = sourceText;
         this.alphabet = alphabet;
         this.key = key;
     }
 
-    public ArrayList<Character> enCoding () {
+    public char[] enCoding () {
         int baseIndex;
         int keyIndex;
+        char[] encodeText = new char[sourceText.size()];
 
-        for (int i = 0; i < sourceText.size() - 1; i++) {
+        for (int i = 0; i < sourceText.size(); i++) {
             baseIndex = alphabet.indexOf(sourceText.get(i));
             keyIndex = baseIndex + key;
             if (keyIndex > alphabet.size() - 1) {
                 keyIndex -= alphabet.size();
             }
-            sourceText.set(i, alphabet.get(keyIndex));
+            encodeText[i] = alphabet.get(keyIndex);
         }
-        return sourceText;
+        return encodeText;
     }
 }
