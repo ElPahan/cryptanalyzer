@@ -1,22 +1,30 @@
 package ua.com.javarush.ppalekhov.cryptanalyzer;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class Encode {
     private final ArrayList<Character> sourceText;
     private final ArrayList<Character> alphabet;
     private final int key;
+    private final String sourcePath;
 
-    public Encode(ArrayList<Character> sourceText, ArrayList<Character> alphabet, int key) {
+    public Encode(ArrayList<Character> sourceText, ArrayList<Character> alphabet, int key, String sourcePath) {
         this.sourceText = sourceText;
         this.alphabet = alphabet;
         this.key = key;
+        this.sourcePath = sourcePath;
     }
 
-    public char[] enCoding () {
+    public String enCoding () {
         int baseIndex;
         int keyIndex;
         char[] encodeText = new char[sourceText.size()];
+        Path path = Path.of(sourcePath);
+        String destPath = path.getParent().toString() + "\\resultEncode.txt";
 
         for (int i = 0; i < sourceText.size(); i++) {
             baseIndex = alphabet.indexOf(sourceText.get(i));
@@ -26,6 +34,12 @@ public class Encode {
             }
             encodeText[i] = alphabet.get(keyIndex);
         }
-        return encodeText;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(destPath))) {
+            writer.write(encodeText);
+            return "Файл зашифрован и лежит по адресу: " + destPath;
+        } catch (IOException e) {
+            System.out.println("Произошла ошибка: " + e.getMessage());
+        }
+        return  "Операция не выполнена. Попробуйте снова";
     }
 }

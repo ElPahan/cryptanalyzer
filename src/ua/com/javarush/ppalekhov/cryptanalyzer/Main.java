@@ -13,42 +13,57 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<Character> sourceText = null;
         ArrayList<Character> alphabet = new ArrayList<>(Alphabet.getAlphabet());
+        Scanner console = new Scanner(System.in);
         int maxValueKey = alphabet.size() - 1;
         int key;
-        Scanner console = new Scanner(System.in);
+        String operation;
 
-        String filename = readFilePath(console, System.out, "Введите путь к файлу с текстом");
+        String filename = readFilePath(console, System.out, "Введите полный путь к файлу с текстом");
         MyFileReader myFileReader = new MyFileReader(filename);
-
         try {
             sourceText = myFileReader.readFile();
         } catch (FileProcessingException e) {
             System.err.println(e.getMessage());
         }
 
-        System.out.println("Введите ключ, для шифровки от нуля до " + maxValueKey);
-        while (true) {
-            String value = console.nextLine();
-            if (isInteger(value, maxValueKey)) {
-                key = Integer.parseInt(value);
-                break;
+        System.out.println("Введите режим работы: 'шифровка' или 'расшифровка'");
+        operation = console.nextLine();
+        if ("шифровка".equalsIgnoreCase(operation)) {
+            System.out.println("Введите ключ, для шифровки от нуля до " + maxValueKey);
+            while (true) {
+                String value = console.nextLine();
+                if (isInteger(value, maxValueKey)) {
+                    key = Integer.parseInt(value);
+                    break;
+                }
+            }
+            Encode encode = new Encode(sourceText, alphabet, key, filename);
+            System.out.println(encode.enCoding());
+        }
+
+
+        else if ("расшифровка".equalsIgnoreCase(operation)) {
+            System.out.format("Ключ шифра лежит в диапозоне: от 0 до %d \nВведите значение ключа или 'взлом'\n",
+                    maxValueKey);
+            operation = console.nextLine();
+            if ("взлом".equalsIgnoreCase(operation)) {
+                BruteForce bruteForce = new BruteForce(sourceText, alphabet, maxValueKey, filename);
+                System.out.println(bruteForce.breacking(console));
+            } else if (isInteger(operation, maxValueKey)) {
+                key = Integer.parseInt(operation);
+                Decode decode = new Decode(sourceText, alphabet, key, filename);
+                System.out.println(decode.decoding());
+
+            } else {
+                System.out.println("Операция не распознана. Попробуйте снова");
+                System.exit(0);
             }
         }
 
-        Encode result = new Encode(sourceText, alphabet, key);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\projects\\newfile.txt")) ) {
-            writer.write(result.enCoding());
-        } catch (IOException e) {
-            System.out.println("Произошла ошибка: " + e.getMessage());
-        }
-
-        Decode decode = new Decode(result.enCoding(), alphabet, key);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\projects\\newfile.txt")) ) {
-            writer.write(decode.decoding());
-        } catch (IOException e) {
-            System.out.println("Произошла ошибка: " + e.getMessage());
+        else {
+            System.out.println("Операция не распознана. Попробуйте снова");
+            System.exit(0);
         }
 
     }
