@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 
 public class MyFileReader {
-    private String pathToFile;
+    private final String PATH_TO_FILE;
     private int numberOfLines;
 
     public MyFileReader(String path) {
-        this.pathToFile = path;
+        this.PATH_TO_FILE = path;
     }
 
     public ArrayList<Character> readFile() {
@@ -19,7 +19,7 @@ public class MyFileReader {
         char[] charArray;
         String[] stringArray;
 
-        try (FileReader reader = new FileReader(this.pathToFile);
+        try (FileReader reader = new FileReader(this.PATH_TO_FILE);
              BufferedReader bufReader = new BufferedReader(reader)) {
             stringArray = new String[countOfLines()];
             for (int i = 0; i < stringArray.length; i++) {
@@ -30,19 +30,19 @@ public class MyFileReader {
                 }
             }
         }  catch (IOException e) {
-            throw new FileProcessingException("Ошибка при чтении файла: " + pathToFile, e);
+            throw new FileProcessingException("Ошибка при чтении файла: " + PATH_TO_FILE, e);
         }
         return list;
     }
 
     private int countOfLines() {
-        try (FileReader reader = new FileReader(this.pathToFile);
+        try (FileReader reader = new FileReader(this.PATH_TO_FILE);
              BufferedReader bufReader = new BufferedReader(reader)) {
             while (bufReader.readLine() != null) {
                 numberOfLines++;
             }
         } catch (IOException e) {
-            throw new FileProcessingException("Ошибка при чтении файла: " + pathToFile, e);
+            throw new FileProcessingException("Ошибка при чтении файла: " + PATH_TO_FILE, e);
         }
         return numberOfLines;
     }

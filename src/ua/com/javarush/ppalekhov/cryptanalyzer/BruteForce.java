@@ -8,35 +8,35 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BruteForce {
-    private final ArrayList<Character> sourceText;
-    private final ArrayList<Character> alphabet;
-    private final String sourcePath;
-    private final int maxValueKey;
+    private final ArrayList<Character> SOURCE_TEXT;
+    private final ArrayList<Character> ALPHABET;
+    private final String SOURCE_PATH;
+    private final int MAX_VALUE_KEY;
     private int shift;
     private boolean flag;
 
     public BruteForce(ArrayList<Character> sourceText, ArrayList<Character> alphabet, int maxValueKey, String sourcePath) {
-        this.sourceText = sourceText;
-        this.alphabet = alphabet;
-        this.sourcePath = sourcePath;
-        this.maxValueKey = maxValueKey;
+        this.SOURCE_TEXT = sourceText;
+        this.ALPHABET = alphabet;
+        this.SOURCE_PATH = sourcePath;
+        this.MAX_VALUE_KEY = maxValueKey;
     }
 
     public String breacking(Scanner console) {
         int variableOfKey;
-        char[] testBreacking = new char[sourceText.size() / 10];
-        char[] resultBreacking = new char[sourceText.size()];
-        Path path = Path.of(sourcePath);
+        char[] testBreacking = new char[SOURCE_TEXT.size() / 10];
+        char[] resultBreacking = new char[SOURCE_TEXT.size()];
+        Path path = Path.of(SOURCE_PATH);
         String operation;
         String destPath = path.getParent().toString() + "\\resultBreacking.txt";
 
-        for (int i = 0; i < maxValueKey; i++) {
-            for (int j = 0; j < sourceText.size() / 10; j++) {
-                variableOfKey = alphabet.indexOf(sourceText.get(j)) + i;
-                if (variableOfKey > alphabet.size() - 1) {
-                    variableOfKey -= alphabet.size();
+        for (int i = 0; i < MAX_VALUE_KEY; i++) {
+            for (int j = 0; j < SOURCE_TEXT.size() / 10; j++) {
+                variableOfKey = ALPHABET.indexOf(SOURCE_TEXT.get(j)) + i;
+                if (variableOfKey > ALPHABET.size() - 1) {
+                    variableOfKey -= ALPHABET.size();
                 }
-                testBreacking[j] = alphabet.get(variableOfKey);
+                testBreacking[j] = ALPHABET.get(variableOfKey);
                 System.out.print(testBreacking[j]);
             }
 
@@ -49,16 +49,16 @@ public class BruteForce {
             }
             if (flag) {
                 int key;
-                for (int k = 0; k < sourceText.size(); k++) {
-                    key = alphabet.indexOf(sourceText.get(k)) + shift;
-                    if (key > alphabet.size() - 1) {
-                        key -= alphabet.size();
+                for (int k = 0; k < SOURCE_TEXT.size(); k++) {
+                    key = ALPHABET.indexOf(SOURCE_TEXT.get(k)) + shift;
+                    if (key > ALPHABET.size() - 1) {
+                        key -= ALPHABET.size();
                     }
-                    resultBreacking[k] = alphabet.get(key);
+                    resultBreacking[k] = ALPHABET.get(key);
                 }
                 break;
             }
-            if (i == maxValueKey - 1) {
+            if (i == MAX_VALUE_KEY - 1) {
                 return ("Перебор всех возможных ключей завершен. Проверьте внимаетельнее");
             }
         }
